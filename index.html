@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O Medidor de Terras — URI Santo Ângelo</title>
+  <meta name="description" content="Brinquedo pedagógico que une Matemática e a história das Missões Jesuíticas. Projeto Integrador IV — URI Câmpus Santo Ângelo · Programa Professor do Amanhã." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <!-- Canvas de partículas de poeira -->
+  <canvas id="dustCanvas"></canvas>
+
+  <!-- Overlay de iluminação quente -->
+  <div class="light-overlay"></div>
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero" id="inicio">
+    <div class="hero__map-bg"></div>
+    <div class="hero__vignette"></div>
+
+    <nav class="navbar">
+      <div class="navbar__brand">
+        <span class="navbar__cross">✦</span>
+        <span class="navbar__title">O Medidor de Terras</span>
+        <span class="navbar__cross">✦</span>
+      </div>
+      <ul class="navbar__links">
+        <li><a href="#sobre">Sobre o Projeto</a></li>
+        <li><a href="#jogo">O Jogo</a></li>
+        <li><a href="#pedagogia">Pedagogia</a></li>
+        <li><a href="#equipe">Equipe</a></li>
+        <li><a href="#materiais" class="navbar__cta">Baixar Materiais</a></li>
+      </ul>
+      <button class="navbar__hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <div class="hero__content">
+      <div class="hero__compass" aria-hidden="true">
+        <svg class="compass-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="100" r="95" fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.6"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4"/>
+          <circle cx="100" cy="100" r="8" fill="#c9a84c" opacity="0.8"/>
+          <!-- Pontos cardeais -->
+          <text x="100" y="18" text-anchor="middle" fill="#c9a84c" font-size="14" font-family="Cinzel" opacity="0.9">N</text>
+          <text x="100" y="196" text-anchor="middle" fill="#c9a84c" font-size="14" font-family="Cinzel" opacity="0.9">S</text>
+          <text x="188" y="105" text-anchor="middle" fill="#c9a84c" font-size="14" font-family="Cinzel" opacity="0.9">E</text>
+          <text x="12" y="105" text-anchor="middle" fill="#c9a84c" font-size="14" font-family="Cinzel" opacity="0.9">O</text>
+          <!-- Agulha Norte -->
+          <polygon points="100,25 95,100 100,90 105,100" fill="#c9a84c" opacity="0.9"/>
+          <!-- Agulha Sul -->
+          <polygon points="100,175 95,100 100,110 105,100" fill="#8b6914" opacity="0.7"/>
+          <!-- Marcações -->
+          <line x1="100" y1="5" x2="100" y2="20" stroke="#c9a84c" stroke-width="1.5" opacity="0.5"/>
+          <line x1="100" y1="180" x2="100" y2="195" stroke="#c9a84c" stroke-width="1.5" opacity="0.5"/>
+          <line x1="5" y1="100" x2="20" y2="100" stroke="#c9a84c" stroke-width="1.5" opacity="0.5"/>
+          <line x1="180" y1="100" x2="195" y2="100" stroke="#c9a84c" stroke-width="1.5" opacity="0.5"/>
+        </svg>
+      </div>
+
+      <div class="hero__text">
+        <p class="hero__label">Projeto Integrador IV · URI Santo Ângelo · 2026</p>
+        <h1 class="hero__title" id="heroTitle">
+          <span class="hero__title-line">O Medidor</span>
+          <span class="hero__title-line hero__title-line--accent">de Terras</span>
+        </h1>
+        <p class="hero__subtitle">
+          Um brinquedo pedagógico que atravessa séculos —<br/>
+          da cartografia jesuítica do século XVIII à sala de aula do século XXI.
+        </p>
+        <div class="hero__actions">
+          <a href="#sobre" class="btn btn--primary">Explorar o Projeto</a>
+          <a href="https://drive.google.com/drive/folders/1Fol9LnIHuUbjLbmUnD8Qpr5jip13o-fX?usp=sharing" target="_blank" rel="noopener" class="btn btn--secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Baixar Materiais
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__ruler" aria-hidden="true">
+        <div class="ruler-bar">
+          <div class="ruler-tick" style="left:0%"><span>0</span></div>
+          <div class="ruler-tick" style="left:10%"></div>
+          <div class="ruler-tick" style="left:20%"><span>2</span></div>
+          <div class="ruler-tick" style="left:30%"></div>
+          <div class="ruler-tick" style="left:40%"><span>4</span></div>
+          <div class="ruler-tick" style="left:50%"></div>
+          <div class="ruler-tick" style="left:60%"><span>6</span></div>
+          <div class="ruler-tick" style="left:70%"></div>
+          <div class="ruler-tick" style="left:80%"><span>8</span></div>
+          <div class="ruler-tick" style="left:90%"></div>
+          <div class="ruler-tick" style="left:100%"><span>10</span></div>
+        </div>
+        <p class="ruler-label">Léguas · Instrumento de Agrimensura</p>
+      </div>
+    </div>
+
+    <div class="hero__scroll-hint">
+      <span>Role para explorar</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </header>
+
+  <!-- ===================== SOBRE ===================== -->
+  <section class="section section--sobre" id="sobre">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__ornament">✦ ✦ ✦</div>
+        <h2 class="section__title">Sobre o Projeto</h2>
+        <div class="section__divider"></div>
+      </div>
+
+      <div class="sobre__grid">
+        <div class="parchment-card sobre__text-card">
+          <div class="parchment-card__inner">
+            <h3 class="parchment-card__title">A Origem</h3>
+            <p>
+              No século XVIII, geodesistas das Coroas de Espanha e Portugal percorriam as margens do Rio Uruguai
+              armados de instrumentos matemáticos, cartas náuticas e o rigor da geometria para demarcar as terras
+              das <strong>Missões Jesuíticas</strong>. Esses homens de ciência e fé mediram um mundo.
+            </p>
+            <p>
+              Quatro séculos depois, um grupo de acadêmicos da <strong>URI — Câmpus de Santo Ângelo</strong>
+              revisitou esse legado e o transformou em um brinquedo pedagógico: <em>O Medidor de Terras</em>.
+            </p>
+          </div>
+        </div>
+
+        <div class="parchment-card sobre__map-card">
+          <div class="parchment-card__inner">
+            <img src="assets/images/mapa_missoes.jpg" alt="Mapa histórico das Missões Jesuíticas — século XVIII" class="sobre__map-img" loading="lazy" />
+            <p class="sobre__map-caption">Terrarum S. Michaelis — Mapa missioneiro, século XVIII</p>
+          </div>
+        </div>
+
+        <div class="parchment-card sobre__context-card">
+          <div class="parchment-card__inner">
+            <h3 class="parchment-card__title">O Contexto Histórico</h3>
+            <p>
+              As <strong>Trinta Reduções Jesuítico-Guaranis</strong> constituíram, entre os séculos XVII e XVIII,
+              um dos mais sofisticados experimentos de organização social das Américas. Após o
+              <strong>Tratado de Madri (1750)</strong>, a disputa territorial entre Espanha e Portugal
+              exigiu medições precisas — e foi a geometria que traçou as fronteiras.
+            </p>
+            <p>
+              Este projeto conecta esse patrimônio histórico ao currículo do Ensino Médio e Técnico,
+              tornando a Matemática viva, contextualizada e significativa.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linha do tempo -->
+      <div class="timeline">
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <span class="timeline__year">Séc. XVII</span>
+            <p>Fundação das Reduções Jesuítico-Guaranis às margens do Rio Uruguai</p>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <span class="timeline__year">1750</span>
+            <p>Tratado de Madri — geodesistas medem e demarcam as terras missioneiras com geometria e trigonometria</p>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <span class="timeline__year">1756–1759</span>
+            <p>Guerra Guaranítica — resistência dos povos Guarani às demarcações territoriais</p>
+          </div>
+        </div>
+        <div class="timeline__item">
+          <div class="timeline__dot"></div>
+          <div class="timeline__content">
+            <span class="timeline__year">2026</span>
+            <p><em>O Medidor de Terras</em> nasce na URI Santo Ângelo — a Matemática das Missões chega à sala de aula</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== O JOGO ===================== -->
+  <section class="section section--jogo" id="jogo">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__ornament">✦ ✦ ✦</div>
+        <h2 class="section__title">O Jogo</h2>
+        <div class="section__divider"></div>
+        <p class="section__subtitle">
+          Um tabuleiro que é um mapa. Cartas que são documentos históricos.<br/>
+          Léguas que são a moeda do conhecimento.
+        </p>
+      </div>
+
+      <!-- Cards do jogo -->
+      <div class="jogo__grid">
+        <div class="parchment-card jogo__card" data-delay="0">
+          <div class="parchment-card__inner">
+            <div class="jogo__icon">⚔</div>
+            <h3 class="parchment-card__title">Desafio Matemático</h3>
+            <p>Resolva problemas de geometria plana em até 60 segundos. Áreas, perímetros, figuras inscritas e coroa circular — tudo no contexto das demarcações territoriais.</p>
+            <div class="jogo__badge jogo__badge--verde">Carta Verde</div>
+          </div>
+        </div>
+
+        <div class="parchment-card jogo__card" data-delay="100">
+          <div class="parchment-card__inner">
+            <div class="jogo__icon">📜</div>
+            <h3 class="parchment-card__title">Evento Histórico</h3>
+            <p>Reviva momentos da história das Missões. Cada carta narra um episódio real — do Tratado de Madri às disputas entre as Coroas ibéricas.</p>
+            <div class="jogo__badge jogo__badge--marrom">Carta Marrom</div>
+          </div>
+        </div>
+
+        <div class="parchment-card jogo__card" data-delay="200">
+          <div class="parchment-card__inner">
+            <div class="jogo__icon">♛</div>
+            <h3 class="parchment-card__title">Poder de Coroa</h3>
+            <p>Cartas estratégicas que representam a influência das Coroas de Espanha e Portugal. Use-as com sabedoria para virar o jogo a seu favor.</p>
+            <div class="jogo__badge jogo__badge--dourado">Carta Dourada</div>
+          </div>
+        </div>
+
+        <div class="parchment-card jogo__card" data-delay="300">
+          <div class="parchment-card__inner">
+            <div class="jogo__icon">⛪</div>
+            <h3 class="parchment-card__title">Redução Jesuítica</h3>
+            <p>Casas de descanso e bônus. Recupere Léguas ou enfrente um Desafio Duplo com recompensa extra — assim como os viajantes que chegavam às reduções.</p>
+            <div class="jogo__badge jogo__badge--azul">Casa Especial</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mecânica do jogo -->
+      <div class="jogo__mechanics">
+        <div class="parchment-card jogo__mechanics-card">
+          <div class="parchment-card__inner">
+            <h3 class="parchment-card__title">Como Jogar</h3>
+            <ol class="jogo__steps">
+              <li><strong>Posicione o tabuleiro</strong> — o mapa das Missões no centro da mesa.</li>
+              <li><strong>Escolha seu peão</strong> e receba sua Ficha de Controle de Léguas.</li>
+              <li><strong>Todos partem</strong> da casa START — Rio Uruguai.</li>
+              <li><strong>Role o dado</strong>, avance as casas e resolva a ação onde parou.</li>
+              <li><strong>Acerte o desafio</strong> para ganhar Léguas e plantar um Marco de Território.</li>
+              <li><strong>Vence</strong> quem acumular mais Léguas ao chegar em São Borja.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="parchment-card jogo__specs-card">
+          <div class="parchment-card__inner">
+            <h3 class="parchment-card__title">Ficha Técnica</h3>
+            <table class="specs-table">
+              <tr><td>Jogadores</td><td>2 a 4</td></tr>
+              <tr><td>Faixa etária</td><td>12 anos ou mais</td></tr>
+              <tr><td>Duração</td><td>50 a 60 minutos</td></tr>
+              <tr><td>Cartas</td><td>72 (40 Desafio · 20 Evento · 12 Poder)</td></tr>
+              <tr><td>Complexidade</td><td>Média</td></tr>
+              <tr><td>Nível escolar</td><td>Ensino Médio e Técnico</td></tr>
+              <tr><td>Construção</td><td>1 a 2 horas (imprimível)</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MATEMÁTICA ===================== -->
+  <section class="section section--matematica" id="matematica">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__ornament">✦ ✦ ✦</div>
+        <h2 class="section__title">A Matemática das Missões</h2>
+        <div class="section__divider"></div>
+        <p class="section__subtitle">
+          Os mesmos conceitos que os geodesistas usaram para medir as terras missioneiras
+          estão nas cartas do jogo.
+        </p>
+      </div>
+
+      <div class="math__grid">
+        <div class="math__formula-card parchment-card">
+          <div class="parchment-card__inner">
+            <div class="math__symbol">△</div>
+            <h4>Geometria Plana</h4>
+            <p>Áreas e perímetros de quadrado, retângulo, triângulo, trapézio e círculo</p>
+            <div class="math__formula">A = ½ · b · h</div>
+          </div>
+        </div>
+        <div class="math__formula-card parchment-card">
+          <div class="parchment-card__inner">
+            <div class="math__symbol">○</div>
+            <h4>Figuras Inscritas</h4>
+            <p>Quadrado, triângulo equilátero e hexágono inscritos em circunferências</p>
+            <div class="math__formula">l = r√2</div>
+          </div>
+        </div>
+        <div class="math__formula-card parchment-card">
+          <div class="parchment-card__inner">
+            <div class="math__symbol">◎</div>
+            <h4>Coroa Circular</h4>
+            <p>Área entre dois raios concêntricos — como as fronteiras circulares das reduções</p>
+            <div class="math__formula">A = π(R² − r²)</div>
+          </div>
+        </div>
+        <div class="math__formula-card parchment-card">
+          <div class="parchment-card__inner">
+            <div class="math__symbol">∠</div>
+            <h4>Trigonometria</h4>
+            <p>Seno, cosseno e tangente — os instrumentos do triângulo retângulo dos agrimensores</p>
+            <div class="math__formula">sen θ = CO/H</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PEDAGOGIA ===================== -->
+  <section class="section section--pedagogia" id="pedagogia">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__ornament">✦ ✦ ✦</div>
+        <h2 class="section__title">Proposta Pedagógica</h2>
+        <div class="section__divider"></div>
+      </div>
+
+      <div class="pedagogia__grid">
+        <div class="parchment-card pedagogia__moment">
+          <div class="parchment-card__inner">
+            <div class="pedagogia__num">I</div>
+            <h3 class="parchment-card__title">Problematização Inicial</h3>
+            <p>
+              O professor apresenta a questão central: <em>"Você sabia que matemáticos do século XVIII
+              mediram as terras das Missões Jesuíticas usando geometria?"</em> Um mapa histórico é projetado
+              e inicia-se uma roda de conversa sobre as fórmulas que os alunos já conhecem.
+            </p>
+            <p class="pedagogia__duration">⏱ 15–20 minutos</p>
+          </div>
+        </div>
+
+        <div class="parchment-card pedagogia__moment">
+          <div class="parchment-card__inner">
+            <div class="pedagogia__num">II</div>
+            <h3 class="parchment-card__title">Organização do Conhecimento</h3>
+            <p>
+              A partida completa é jogada em grupos de 2 a 4 alunos. O professor circula pelos grupos,
+              observa estratégias, media dúvidas e pode pausar para explicar fórmulas que emergem
+              naturalmente das cartas.
+            </p>
+            <p class="pedagogia__duration">⏱ 50–60 minutos</p>
+          </div>
+        </div>
+
+        <div class="parchment-card pedagogia__moment">
+          <div class="parchment-card__inner">
+            <div class="pedagogia__num">III</div>
+            <h3 class="parchment-card__title">Aplicação do Conhecimento</h3>
+            <p>
+              Discussão coletiva pós-jogo, atividade de extensão com novas situações-problema e
+              conexão com as profissões técnicas de Eletrotécnica e Mecânica. Cada aluno registra
+              individualmente o que aprendeu.
+            </p>
+            <p class="pedagogia__duration">⏱ 20–30 minutos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Habilidades BNCC -->
+      <div class="bncc-block parchment-card">
+        <div class="parchment-card__inner">
+          <h3 class="parchment-card__title">Habilidades da BNCC</h3>
+          <div class="bncc__items">
+            <div class="bncc__item">
+              <span class="bncc__code">EM13MAT302</span>
+              <p>Resolver e elaborar problemas que envolvam cálculo de áreas e perímetros</p>
+            </div>
+            <div class="bncc__item">
+              <span class="bncc__code">EM13CHS106</span>
+              <p>Utilizar linguagens cartográfica, gráfica e iconográfica de forma crítica e reflexiva nas diversas práticas sociais</p>
+            </div>
+          </div>
+          <div class="competencias">
+            <h4>Competências Socioemocionais</h4>
+            <div class="competencias__tags">
+              <span>Cooperação</span>
+              <span>Comunicação</span>
+              <span>Trabalho em equipe</span>
+              <span>Pensamento crítico</span>
+              <span>Resolução de problemas</span>
+              <span>Criatividade</span>
+              <span>Persistência</span>
+              <span>Respeito</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MATERIAIS ===================== -->
+  <section class="section section--materiais" id="materiais">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__ornament">✦ ✦ ✦</div>
+        <h2 class="section__title">Materiais do Jogo</h2>
+        <div class="section__divider"></div>
+        <p class="section__subtitle">
+          Todos os arquivos digitais estão disponíveis para download gratuito.<br/>
+          Imprima, recorte e leve as Missões para a sua sala de aula.
+        </p>
+      </div>
+
+      <div class="materiais__grid">
+        <div class="parchment-card materiais__item">
+          <div class="parchment-card__inner">
+            <div class="materiais__icon">🗺</div>
+            <h4>Tabuleiro</h4>
+            <p>Mapa do percurso Rio Uruguai → São Borja. Formato A3 (ou A4 ampliado em 141%)</p>
+          </div>
+        </div>
+        <div class="parchment-card materiais__item">
+          <div class="parchment-card__inner">
+            <div class="materiais__icon">🃏</div>
+            <h4>72 Cartas</h4>
+            <p>40 de Desafio Matemático · 20 de Evento Histórico · 12 de Poder de Coroa</p>
+          </div>
+        </div>
+        <div class="parchment-card materiais__item">
+          <div class="parchment-card__inner">
+            <div class="materiais__icon">🪙</div>
+            <h4>Fichas de Léguas</h4>
+            <p>A moeda do jogo — representando as unidades de medida usadas pelos geodesistas coloniais</p>
+          </div>
+        </div>
+        <div class="parchment-card materiais__item">
+          <div class="parchment-card__inner">
+            <div class="materiais__icon">📋</div>
+            <h4>Ficha de Controle</h4>
+            <p>Registro individual de Léguas e Marcos de Território conquistados durante a partida</p>
+          </div>
+        </div>
+        <div class="parchment-card materiais__item">
+          <div class="parchment-card__inner">
+            <div class="materiais__icon">📐</div>
+            <h4>Rascunho de Cálculos</h4>
+            <p>Folha de apoio para os cálculos matemáticos durante os Desafios — como os cadernos dos geodesistas</p>
+          </div>
+        </div>
+        <div class="parchment-card materiais__item">
+          <div class="parchment-card__inner">
+            <div class="materiais__icon">📖</div>
+            <h4>Manual de Regras</h4>
+            <p>Guia completo de instruções, tipos de casa e mecânicas do jogo</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="materiais__cta">
+        <div class="parchment-card materiais__cta-card">
+          <div class="parchment-card__inner">
+            <div class="materiais__cta-icon">📁</div>
+            <h3>Pasta Completa de Arquivos</h3>
+            <p>
+              Todos os arquivos digitais do jogo estão organizados no Google Drive e disponíveis
+              para download gratuito. Inclui tabuleiro, cartas, fichas, manual de regras e
+              ficha pedagógica completa.
+            </p>
+            <a href="https://drive.google.com/drive/folders/1Fol9LnIHuUbjLbmUnD8Qpr5jip13o-fX?usp=sharing"
+               target="_blank" rel="noopener"
+               class="btn btn--primary btn--large">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Acessar e Baixar os Materiais
+            </a>
+            <p class="materiais__cta-note">
+              Acesso via Google Drive · Gratuito · Imprimível · Baixo custo
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EQUIPE ===================== -->
+  <section class="section section--equipe" id="equipe">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__ornament">✦ ✦ ✦</div>
+        <h2 class="section__title">A Equipe</h2>
+        <div class="section__divider"></div>
+        <p class="section__subtitle">
+          Os geodesistas do século XXI que trouxeram as Missões de volta à vida.
+        </p>
+      </div>
+
+      <div class="equipe__grid">
+        <div class="parchment-card equipe__card equipe__card--academico">
+          <div class="parchment-card__inner">
+            <div class="equipe__role-label">Acadêmicos</div>
+            <ul class="equipe__list">
+              <li>
+                <span class="equipe__name">Adriana dos Santos Pereira</span>
+              </li>
+              <li>
+                <span class="equipe__name">Ana Carolina Barichello</span>
+              </li>
+              <li>
+                <span class="equipe__name">Lucas José Gomes da Silva</span>
+              </li>
+              <li>
+                <span class="equipe__name">Renan Ariel Kaiser</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="parchment-card equipe__card equipe__card--orientadores">
+          <div class="parchment-card__inner">
+            <div class="equipe__role-label">Professores Supervisores</div>
+            <ul class="equipe__list">
+              <li>
+                <span class="equipe__name">Dr. João Carlos Kraus</span>
+              </li>
+              <li>
+                <span class="equipe__name">Dra. Rosangela Ferreira Prestes</span>
+                <span class="equipe__detail">Professora Orientadora</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="parchment-card equipe__card equipe__card--instituicao">
+          <div class="parchment-card__inner">
+            <div class="equipe__role-label">Instituição</div>
+            <p class="equipe__inst-name">URI — Universidade Regional Integrada do Alto Uruguai e das Missões</p>
+            <p class="equipe__inst-detail">Câmpus de Santo Ângelo</p>
+            <p class="equipe__inst-detail">Programa Professor do Amanhã</p>
+            <p class="equipe__inst-detail">Projeto Integrador IV · Abril de 2026</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REFERÊNCIAS ===================== -->
+  <section class="section section--referencias" id="referencias">
+    <div class="container">
+      <div class="section__header">
+        <div class="section__ornament">✦ ✦ ✦</div>
+        <h2 class="section__title">Referências Históricas</h2>
+        <div class="section__divider"></div>
+      </div>
+      <div class="parchment-card referencias__card">
+        <div class="parchment-card__inner">
+          <ul class="referencias__list">
+            <li>CAMPOS, Manuel de. <em>Trigonometria Plana e Esférica.</em> Lisboa: Colégio de Santo Antão, 1737.</li>
+            <li>CARVALHO, Alexandra M. F. Execução técnica do Tratado de Madrid (1750): o contributo dos engenheiros portugueses. <em>Omni Tempore</em>, Porto: FLUP, 2019.</li>
+            <li>CRUZ, João José de Sousa. A definição das fronteiras terrestres do Brasil com países vizinhos, durante o século XVIII. <em>Revista Militar</em>, n. 2590, 2017.</li>
+            <li>FERREIRA, Mário O. C. <em>O Tratado de Madrid e o Brasil Meridional.</em> Lisboa: CNCDP, 2001.</li>
+            <li>WIKIPEDIA. Agrimensura. Disponível em: <a href="https://pt.wikipedia.org/wiki/Agrimensura" target="_blank" rel="noopener">pt.wikipedia.org/wiki/Agrimensura</a>.</li>
+            <li>WIKIPEDIA. Tratado de Madrid (1750). Disponível em: <a href="https://pt.wikipedia.org/wiki/Tratado_de_Madrid_(1750)" target="_blank" rel="noopener">pt.wikipedia.org/wiki/Tratado_de_Madrid_(1750)</a>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__ornament">✦ ✦ ✦</div>
+    </div>
+    <div class="container footer__content">
+      <div class="footer__logos">
+        <img src="assets/images/logos_institucional.png"
+             alt="Logos: Programa Professor do Amanhã e URI Santo Ângelo"
+             class="footer__logos-img" />
+      </div>
+      <div class="footer__info">
+        <p class="footer__project-name">O Medidor de Terras</p>
+        <p>Projeto Integrador IV · Planejamento de Ação Extensionista</p>
+        <p>URI — Universidade Regional Integrada do Alto Uruguai e das Missões</p>
+        <p>Câmpus de Santo Ângelo · Programa Professor do Amanhã · 2026</p>
+      </div>
+      <div class="footer__links">
+        <a href="https://drive.google.com/drive/folders/1Fol9LnIHuUbjLbmUnD8Qpr5jip13o-fX?usp=sharing"
+           target="_blank" rel="noopener" class="footer__download-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Baixar Materiais
+        </a>
+        <nav class="footer__nav">
+          <a href="#inicio">Início</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#jogo">O Jogo</a>
+          <a href="#pedagogia">Pedagogia</a>
+          <a href="#equipe">Equipe</a>
+        </nav>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>
+        <span class="footer__cross">✦</span>
+        Nas margens do Rio Uruguai, onde a geometria encontrou a história.
+        <span class="footer__cross">✦</span>
+      </p>
+      <p class="footer__copy">© 2026 URI Santo Ângelo · Programa Professor do Amanhã</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
